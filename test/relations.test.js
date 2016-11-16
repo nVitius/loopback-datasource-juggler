@@ -738,11 +738,10 @@ describe('relations', function() {
             ch1.should.have.lengthOf(1);
             ch1[0].name.should.eql('z');
             //order
-            //should apply on related model instead of through model 
+            //should apply on related model instead of through model
             physician.patients({order: 'name DESC'}, function(err2, ch2) {
               should.not.exist(err2);
               should.exist(ch2);
-              console.log(ch2)
               ch2.should.have.lengthOf(3);
               ch2[0].name.should.eql('z');
               done();
