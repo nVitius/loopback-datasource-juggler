@@ -731,7 +731,7 @@ describe('relations', function() {
           should.exist(ch);
           ch.should.have.lengthOf(1);
           ch[0].name.should.eql('z');
-          //offset plus skip
+          //offset as alias of skip
           physician.patients({limit: 1, offset: 1}, function(err1, ch1) {
             should.not.exist(err1);
             should.exist(ch1);
@@ -744,7 +744,15 @@ describe('relations', function() {
               should.exist(ch2);
               ch2.should.have.lengthOf(3);
               ch2[0].name.should.eql('z');
-              done();
+              //where
+              //should apply on related model instead of through model
+              physician.patients({where: {name: 'c'}}, function(err3, ch3) {
+                should.not.exist(err3);
+                should.exist(ch3);
+                ch3.should.have.lengthOf(1);
+                ch3[0].name.should.eql('c');
+                done();
+              });
             });
           });
         });
