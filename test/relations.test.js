@@ -715,8 +715,10 @@ describe('relations', function() {
     });
 
     it('should fetch scoped instances with paging filters', function(done) {
+      var samplePatientId;
       Physician.create(function(err, physician) {
-        physician.patients.create({name: 'a'}, function() {
+        physician.patients.create({name: 'a'}, function(err, p) {
+          samplePatientId = p.id;
           physician.patients.create({name: 'z'}, function() {
             physician.patients.create({name: 'c'}, function() {
               verify(physician);
@@ -725,7 +727,7 @@ describe('relations', function() {
         });
       });
       function verify(physician) {
-        //limit plus skip
+        // limit plus skip
         physician.patients({limit: 1, skip: 1}, function(err, ch) {
           should.not.exist(err);
           should.exist(ch);
@@ -744,13 +746,14 @@ describe('relations', function() {
               should.exist(ch2);
               ch2.should.have.lengthOf(3);
               ch2[0].name.should.eql('z');
-              //where
+              //where with id provided
               //should apply on related model instead of through model
-              physician.patients({where: {name: 'c'}}, function(err3, ch3) {
+              physician.patients({where: {id: samplePatientId}},
+                function(err3, ch3) {
                 should.not.exist(err3);
                 should.exist(ch3);
                 ch3.should.have.lengthOf(1);
-                ch3[0].name.should.eql('c');
+                ch3[0].id.should.eql(samplePatientId);
                 done();
               });
             });
