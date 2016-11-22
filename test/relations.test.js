@@ -750,12 +750,12 @@ describe('relations', function() {
               //should apply on related model instead of through model
               physician.patients({where: {id: samplePatientId}},
                 function(err3, ch3) {
-                should.not.exist(err3);
-                should.exist(ch3);
-                ch3.should.have.lengthOf(1);
-                ch3[0].id.should.eql(samplePatientId);
-                done();
-              });
+                  should.not.exist(err3);
+                  should.exist(ch3);
+                  ch3.should.have.lengthOf(1);
+                  ch3[0].id.should.eql(samplePatientId);
+                  done();
+                });
             });
           });
         });
